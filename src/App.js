@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Products, Navbar, Cart } from './components';
 import { commerce } from './lib/commerce';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -6,15 +6,6 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 const App = () => {
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState({});
-  const isMountedVal = useRef(1);
-
-  useEffect(() => {
-    isMountedVal.current = 1;
-
-    return () => {
-      isMountedVal.current = 0;
-    };
-  });
 
   const fetchProducts = async () => {
     const { data } = await commerce.products.list();
@@ -50,10 +41,8 @@ const App = () => {
   };
 
   useEffect(() => {
-    if (isMountedVal.current) {
-      fetchProducts();
-      fetchCart();
-    }
+    fetchProducts();
+    fetchCart();
   }, []);
 
   console.log(cart);
